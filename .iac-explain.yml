@@ -1,0 +1,65 @@
+# iac-explain Configuration File
+# This file configures the behavior of the iac-explain tool
+
+risk:
+  # Rules that are considered critical
+  critical_rules:
+    - K8S_PRIV_ESC
+    - TF_AWS_SG_OPEN_ALL
+    - TF_AWS_SG_SSH_OPEN
+
+  # Rules that are considered high priority
+  high_rules:
+    - TF_AWS_S3_PUBLIC
+    - TF_AWS_S3_NO_ENCRYPTION
+    - K8S_NO_LIMITS
+    - K8S_RUN_AS_ROOT
+
+  # Rules that are considered medium priority
+  medium_rules:
+    - TF_AWS_S3_NO_VERSIONING
+    - K8S_LATEST_TAG
+
+review:
+  # Paths to ignore during analysis
+  ignore_paths:
+    - "**/.terraform/**"
+    - "**/node_modules/**"
+    - "**/examples/**"
+    - "**/.git/**"
+
+  # Cloud providers to analyze (aws, gcp, azure)
+  cloud:
+    - "aws"
+    - "gcp"
+    - "azure"
+
+fix:
+  # Labels that allow automatic patch application
+  auto_patch_labels:
+    - "allow-auto-patch"
+    - "security-fix"
+
+  # Maximum number of patches to apply in a single run
+  max_patches: 10
+
+cost:
+  # Enable cost analysis
+  enable: true
+
+  # Baseline branch for cost comparison
+  baseline_branch: "main"
+
+drift:
+  # Enable drift detection
+  enable: true
+
+llm:
+  # LLM provider for explanations
+  provider: "azure_openai"
+
+  # Model to use for explanations
+  model: "gpt-4o-mini"
+
+  # Temperature for LLM responses (0.0-1.0)
+  temperature: 0.1

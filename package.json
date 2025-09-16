@@ -1,0 +1,30 @@
+{
+  "name": "iac-explain",
+  "version": "0.1.0",
+  "description": "Infrastructure as Code analysis and explanation tool with MCP support",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "actions/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "eslint packages/**/*.ts actions/**/*.ts",
+    "typecheck": "npm run typecheck --workspaces",
+    "dev": "npm run dev -w packages/mcp-server",
+    "start": "npm run start -w packages/mcp-server"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

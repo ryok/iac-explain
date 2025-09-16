@@ -1,0 +1,60 @@
+# Example Kubernetes deployment with security issues
+# This is used to demonstrate the iac-explain tool capabilities
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vulnerable-app
+  namespace: default
+  labels:
+    app: vulnerable-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vulnerable-app
+  template:
+    metadata:
+      labels:
+        app: vulnerable-app
+    spec:
+      containers:
+      - name: web
+        # Issue: Using :latest tag
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        # Missing: resource limits
+        # Missing: security context
+        env:
+        - name: ENV
+          value: "production"
+
+      - name: sidecar
+        # Issue: Using :latest tag
+        image: alpine:latest
+        # Issue: Privileged container
+        securityContext:
+          allowPrivilegeEscalation: true
+          privileged: true
+        # Missing: resource limits
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do sleep 30; done"]
+
+      # Missing: pod security context
+      # Missing: runAsNonRoot setting
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnerable-app-service
+spec:
+  # Potential Issue: LoadBalancer exposes to internet
+  type: LoadBalancer
+  selector:
+    app: vulnerable-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

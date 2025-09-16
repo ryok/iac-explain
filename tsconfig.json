@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "composite": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@iac-explain/*": ["packages/*/src"]
+    }
+  },
+  "references": [
+    { "path": "./packages/mcp-server" },
+    { "path": "./packages/tf-parser" },
+    { "path": "./packages/k8s-parser" },
+    { "path": "./packages/analyzers" },
+    { "path": "./packages/policy-engine" },
+    { "path": "./packages/patch-engine" },
+    { "path": "./packages/cost-engine" },
+    { "path": "./packages/drift-engine" },
+    { "path": "./packages/gh-adapter" },
+    { "path": "./packages/llm-adapter" }
+  ]
+}
