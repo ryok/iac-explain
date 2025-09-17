@@ -1,65 +1,85 @@
-# iac-explain Configuration File
-# This file configures the behavior of the iac-explain tool
+# iac-explain 設定ファイル
+# このファイルは iac-explain ツールの動作を設定します
 
 risk:
-  # Rules that are considered critical
+  # 重大とみなされるルール
   critical_rules:
-    - K8S_PRIV_ESC
-    - TF_AWS_SG_OPEN_ALL
-    - TF_AWS_SG_SSH_OPEN
+    - K8S_PRIV_ESC              # Kubernetes特権昇格
+    - TF_AWS_SG_OPEN_ALL        # セキュリティグループ全開放
+    - TF_AWS_SG_SSH_OPEN        # SSH全世界公開
 
-  # Rules that are considered high priority
+  # 高優先度とみなされるルール
   high_rules:
-    - TF_AWS_S3_PUBLIC
-    - TF_AWS_S3_NO_ENCRYPTION
-    - K8S_NO_LIMITS
-    - K8S_RUN_AS_ROOT
+    - TF_AWS_S3_PUBLIC          # S3バケット公開
+    - TF_AWS_S3_NO_ENCRYPTION   # S3暗号化なし
+    - K8S_NO_LIMITS             # リソース制限なし
+    - K8S_RUN_AS_ROOT           # root権限実行
 
-  # Rules that are considered medium priority
+  # 中優先度とみなされるルール
   medium_rules:
-    - TF_AWS_S3_NO_VERSIONING
-    - K8S_LATEST_TAG
+    - TF_AWS_S3_NO_VERSIONING   # S3バージョニングなし
+    - K8S_LATEST_TAG            # :latestタグ使用
 
 review:
-  # Paths to ignore during analysis
+  # 分析時に無視するパス
   ignore_paths:
-    - "**/.terraform/**"
-    - "**/node_modules/**"
-    - "**/examples/**"
-    - "**/.git/**"
+    - "**/.terraform/**"        # Terraformキャッシュ
+    - "**/node_modules/**"      # Node.js依存関係
+    - "**/examples/**"          # サンプルコード
+    - "**/.git/**"              # Gitディレクトリ
 
-  # Cloud providers to analyze (aws, gcp, azure)
+  # 分析対象のクラウドプロバイダー
   cloud:
-    - "aws"
-    - "gcp"
-    - "azure"
+    - "aws"                     # Amazon Web Services
+    - "gcp"                     # Google Cloud Platform
+    - "azure"                   # Microsoft Azure
 
 fix:
-  # Labels that allow automatic patch application
+  # 自動パッチ適用を許可するラベル
   auto_patch_labels:
-    - "allow-auto-patch"
-    - "security-fix"
+    - "allow-auto-patch"        # 自動パッチ許可
+    - "security-fix"            # セキュリティ修正
 
-  # Maximum number of patches to apply in a single run
+  # 1回の実行で適用する最大パッチ数
   max_patches: 10
 
 cost:
-  # Enable cost analysis
+  # コスト分析を有効化
   enable: true
 
-  # Baseline branch for cost comparison
+  # コスト比較のベースラインブランチ
   baseline_branch: "main"
 
 drift:
-  # Enable drift detection
+  # ドリフト検出を有効化
   enable: true
 
 llm:
-  # LLM provider for explanations
+  # 説明生成用のLLMプロバイダー
   provider: "azure_openai"
 
-  # Model to use for explanations
+  # 使用するモデル
   model: "gpt-4o-mini"
 
-  # Temperature for LLM responses (0.0-1.0)
+  # LLM応答の温度設定（0.0-1.0）
   temperature: 0.1
+
+# 日本語化された設定例
+# 組織固有の設定をここに追加してください
+organization:
+  # 組織名
+  name: "サンプル組織"
+
+  # 連絡先
+  contact: "security@example.co.jp"
+
+  # 日本固有の設定
+  locale:
+    # 言語設定
+    language: "ja"
+
+    # 通貨設定
+    currency: "JPY"
+
+    # タイムゾーン
+    timezone: "Asia/Tokyo"
