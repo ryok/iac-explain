@@ -1,94 +1,94 @@
 # iac-explain
 
-Infrastructure as Code (IaC) analysis and explanation tool with Model Context Protocol (MCP) support.
+Model Context Protocol (MCP) 対応のInfrastructure as Code (IaC) 分析・説明ツール
 
-## Overview
+## 概要
 
-`iac-explain` is a comprehensive tool that analyzes Terraform plans and Kubernetes manifests, providing:
+`iac-explain` は、Terraformプランとkubernetesマニフェストを分析し、以下の機能を提供する包括的なツールです：
 
-- 🔍 **Security Analysis**: Detect misconfigurations and security risks
-- 📊 **Cost Estimation**: Calculate infrastructure costs and changes
-- 🛠️ **Auto-Fixing**: Generate patches for common security issues
-- 📚 **Human-Readable Explanations**: Convert technical changes to natural language
-- 🔄 **Drift Detection**: Identify differences between planned and actual state
+- 🔍 **セキュリティ分析**: 設定ミスとセキュリティリスクの検出
+- 📊 **コスト推定**: インフラストラクチャコストと変更の計算
+- 🛠️ **自動修正**: 一般的なセキュリティ問題のパッチ生成
+- 📚 **人間が読める説明**: 技術的な変更を自然言語に変換
+- 🔄 **ドリフト検出**: 計画された状態と実際の状態の差分を特定
 
-## Features
+## 機能
 
-### Supported Technologies
+### サポート技術
 
-- **Terraform**: HCL analysis, plan JSON parsing (AWS, GCP, Azure)
-- **Kubernetes**: YAML manifest validation, Helm chart analysis
-- **Security Rules**: CIS benchmarks, industry best practices
-- **Cost Analysis**: Integration with Infracost
+- **Terraform**: HCL分析、plan JSON解析（AWS、GCP、Azure）
+- **Kubernetes**: YAMLマニフェスト検証、Helmチャート分析
+- **セキュリティルール**: CISベンチマーク、業界のベストプラクティス
+- **コスト分析**: Infracostとの統合
 
-### Key Capabilities
+### 主要機能
 
-- **MCP Integration**: Works seamlessly with Claude and other MCP-compatible tools
-- **CI/CD Integration**: GitHub Actions, GitLab CI, Azure DevOps
-- **Policy as Code**: Customizable rules with Rego support
-- **Automated Remediation**: Generate fix suggestions and patches
+- **MCP統合**: Claudeやその他のMCP互換ツールとシームレスに連携
+- **CI/CD統合**: GitHub Actions、GitLab CI、Azure DevOps
+- **Policy as Code**: Regoサポートによるカスタマイズ可能なルール
+- **自動修復**: 修正提案とパッチの生成
 
-## Quick Start
+## クイックスタート
 
-### Installation
+### インストール
 
 ```bash
-# Clone the repository
+# リポジトリをクローン
 git clone https://github.com/your-org/iac-explain.git
 cd iac-explain
 
-# Install dependencies
+# 依存関係をインストール
 npm install
 
-# Build the project
+# プロジェクトをビルド
 npm run build
 ```
 
-### Basic Usage
+### 基本的な使い方
 
-#### Analyze Terraform Plan
+#### Terraformプランの分析
 
 ```bash
-# Generate and analyze a Terraform plan
+# Terraformプランを生成して分析
 terraform plan -out=tfplan.bin
 terraform show -json tfplan.bin > tfplan.json
 
-# Run analysis
+# 分析を実行
 npx iac-explain explain-plan --workspace ./terraform --plan-path tfplan.json
 ```
 
-#### Validate Kubernetes Manifests
+#### Kubernetesマニフェストの検証
 
 ```bash
-# Analyze Kubernetes YAML files
+# Kubernetes YAMLファイルを分析
 npx iac-explain validate-k8s --manifests-dir ./k8s
 
-# Analyze Helm chart
+# Helmチャートを分析
 npx iac-explain validate-k8s --helm-chart ./charts/myapp
 ```
 
-#### Cost Analysis
+#### コスト分析
 
 ```bash
-# Compare costs against main branch
+# mainブランチとのコスト比較
 npx iac-explain cost-delta --workspace ./terraform --baseline-branch main
 ```
 
-### MCP Server Usage
+### MCPサーバーの使用
 
-Start the MCP server for integration with Claude or other MCP clients:
+Claudeやその他のMCPクライアントと統合するためのMCPサーバーを起動：
 
 ```bash
-# Start the server
+# サーバーを起動
 npx iac-explain serve
 
-# List available tools
+# 利用可能なツールを一覧表示
 npx iac-explain list-tools
 ```
 
-## Configuration
+## 設定
 
-Create a `.iac-explain.yml` file in your repository root:
+リポジトリのルートに `.iac-explain.yml` ファイルを作成：
 
 ```yaml
 risk:
@@ -113,39 +113,39 @@ drift:
   enable: true
 ```
 
-## Security Rules
+## セキュリティルール
 
-### Terraform Rules
+### Terraformルール
 
 #### AWS
-- **TF_AWS_S3_PUBLIC**: Detects public S3 buckets
-- **TF_AWS_S3_NO_ENCRYPTION**: Missing S3 encryption
-- **TF_AWS_SG_OPEN_ALL**: Overly permissive security groups
-- **TF_AWS_SG_SSH_OPEN**: SSH access from 0.0.0.0/0
+- **TF_AWS_S3_PUBLIC**: パブリックS3バケットの検出
+- **TF_AWS_S3_NO_ENCRYPTION**: S3暗号化の欠如
+- **TF_AWS_SG_OPEN_ALL**: 過度に許可されたセキュリティグループ
+- **TF_AWS_SG_SSH_OPEN**: 0.0.0.0/0からのSSHアクセス
 
 #### Azure
-- **TF_AZ_STG_TLS12**: Weak TLS configuration
-- **TF_AZ_HTTPS_ONLY**: HTTP traffic allowed
+- **TF_AZ_STG_TLS12**: 弱いTLS設定
+- **TF_AZ_HTTPS_ONLY**: HTTPトラフィックの許可
 
 #### GCP
-- **TF_GCP_BUCKET_PUBLIC**: Public GCS buckets
-- **TF_GCP_FW_OPEN_ALL**: Permissive firewall rules
+- **TF_GCP_BUCKET_PUBLIC**: パブリックGCSバケット
+- **TF_GCP_FW_OPEN_ALL**: 許可的なファイアウォールルール
 
-### Kubernetes Rules
+### Kubernetesルール
 
-- **K8S_NO_LIMITS**: Missing resource limits
-- **K8S_PRIV_ESC**: Privilege escalation allowed
-- **K8S_RUN_AS_ROOT**: Running as root user
-- **K8S_LATEST_TAG**: Using :latest image tags
+- **K8S_NO_LIMITS**: リソース制限の欠如
+- **K8S_PRIV_ESC**: 特権昇格の許可
+- **K8S_RUN_AS_ROOT**: rootユーザーとしての実行
+- **K8S_LATEST_TAG**: :latestタグの使用
 
-## CI/CD Integration
+## CI/CD統合
 
 ### GitHub Actions
 
-Add the workflow file to `.github/workflows/iac-explain.yml`:
+ワークフローファイルを `.github/workflows/iac-explain.yml` に追加：
 
 ```yaml
-name: IaC Security Analysis
+name: IaC セキュリティ分析
 on:
   pull_request:
     paths: ["**/*.tf", "**/*.yaml"]
@@ -158,77 +158,77 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm ci
       - run: npm run build
-      # Analysis steps...
+      # 分析ステップ...
 ```
 
-### Example Output
+### 出力例
 
 ```markdown
-# Infrastructure Analysis Report
+# インフラストラクチャ分析レポート
 
-## Summary
-- **Additions**: 3 resources
-- **Changes**: 1 resource
-- **Deletions**: 0 resources
+## サマリー
+- **追加**: 3リソース
+- **変更**: 1リソース
+- **削除**: 0リソース
 
-## Critical Issues (2)
+## 重大な問題 (2)
 
 ### TF_AWS_SG_OPEN_ALL
-**Resource**: aws_security_group.web
-**Description**: Security group allows SSH access from 0.0.0.0/0
-**Evidence**: Ingress rule allows 0.0.0.0/0 access to port 22
-**Recommendation**: Restrict SSH access to specific IP ranges
+**リソース**: aws_security_group.web
+**説明**: セキュリティグループが0.0.0.0/0からSSHアクセスを許可
+**証拠**: Ingressルールが0.0.0.0/0からポート22へのアクセスを許可
+**推奨事項**: 特定のIP範囲にSSHアクセスを制限
 
 ### K8S_PRIV_ESC
-**Resource**: Deployment/vulnerable-app
-**Description**: Container allows privilege escalation
-**Evidence**: allowPrivilegeEscalation: true in sidecar container
-**Recommendation**: Set allowPrivilegeEscalation to false
+**リソース**: Deployment/vulnerable-app
+**説明**: コンテナが特権昇格を許可
+**証拠**: sidecarコンテナでallowPrivilegeEscalation: true
+**推奨事項**: allowPrivilegeEscalationをfalseに設定
 
-## Cost Impact
-- **Monthly Delta**: +$156/month
-- **Primary Driver**: EC2 instances (2x t3.medium)
+## コスト影響
+- **月額差分**: +15,600円/月
+- **主要因**: EC2インスタンス（2x t3.medium）
 ```
 
-## Development
+## 開発
 
-### Project Structure
+### プロジェクト構造
 
 ```
 iac-explain/
 ├── packages/
-│   ├── mcp-server/         # MCP server implementation
-│   ├── tf-parser/          # Terraform plan parser
-│   ├── k8s-parser/         # Kubernetes manifest parser
-│   ├── analyzers/          # Security rule engine
-│   ├── policy-engine/      # Policy management
-│   ├── patch-engine/       # Fix generation
-│   └── cost-engine/        # Cost analysis
-├── examples/               # Example configurations
-├── policies/               # Rule definitions
-└── .github/workflows/      # CI/CD workflows
+│   ├── mcp-server/         # MCPサーバー実装
+│   ├── tf-parser/          # Terraformプランパーサー
+│   ├── k8s-parser/         # Kubernetesマニフェストパーサー
+│   ├── analyzers/          # セキュリティルールエンジン
+│   ├── policy-engine/      # ポリシー管理
+│   ├── patch-engine/       # 修正生成
+│   └── cost-engine/        # コスト分析
+├── examples/               # 設定例
+├── policies/               # ルール定義
+└── .github/workflows/      # CI/CDワークフロー
 ```
 
-### Adding New Rules
+### 新しいルールの追加
 
-1. Create rule implementation:
+1. ルール実装を作成：
 
 ```typescript
 export const MyCustomRule: SecurityRule = {
   id: 'MY_CUSTOM_RULE',
-  title: 'My Custom Security Rule',
+  title: 'カスタムセキュリティルール',
   severity: 'high',
   category: 'security',
   resourceTypes: ['aws_instance'],
 
   evaluate(context: RuleContext): RuleFinding | null {
-    // Rule logic here
+    // ルールロジックをここに記述
     return null;
   }
 };
 ```
 
-2. Register the rule:
+2. ルールを登録：
 
 ```typescript
 import { createDefaultRuleEngine } from '@iac-explain/analyzers';
@@ -237,64 +237,64 @@ const engine = createDefaultRuleEngine();
 engine.registerRule(MyCustomRule);
 ```
 
-### Running Tests
+### テストの実行
 
 ```bash
-# Run all tests
+# すべてのテストを実行
 npm test
 
-# Run specific package tests
+# 特定パッケージのテストを実行
 npm test -w packages/tf-parser
 
-# Run with coverage
+# カバレッジ付きで実行
 npm run test:coverage
 ```
 
-## Roadmap
+## ロードマップ
 
-- [ ] **Enhanced Cloud Support**: Complete Azure and GCP rule coverage
-- [ ] **Policy Engine**: Full Rego integration for custom rules
-- [ ] **Patch Generation**: Automated fix application
-- [ ] **Web Interface**: Browser-based analysis dashboard
-- [ ] **IDE Extensions**: VS Code and JetBrains plugins
-- [ ] **Enterprise Features**: SSO, audit logs, compliance reporting
+- [ ] **クラウドサポートの拡張**: Azure、GCPルールの完全カバレッジ
+- [ ] **ポリシーエンジン**: カスタムルールのための完全なRego統合
+- [ ] **パッチ生成**: 自動修正の適用
+- [ ] **Webインターフェース**: ブラウザベースの分析ダッシュボード
+- [ ] **IDE拡張**: VS CodeとJetBrainsプラグイン
+- [ ] **エンタープライズ機能**: SSO、監査ログ、コンプライアンスレポート
 
-## Contributing
+## コントリビューション
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. リポジトリをフォーク
+2. フィーチャーブランチを作成（`git checkout -b feature/amazing-feature`）
+3. 変更をコミット（`git commit -m 'Add amazing feature'`）
+4. ブランチにプッシュ（`git push origin feature/amazing-feature`）
+5. プルリクエストを作成
 
-### Development Setup
+### 開発環境のセットアップ
 
 ```bash
-# Install dependencies
+# 依存関係をインストール
 npm install
 
-# Run in development mode
+# 開発モードで実行
 npm run dev
 
-# Build and test
+# ビルドとテスト
 npm run build
 npm test
 
-# Lint code
+# コードをリント
 npm run lint
 ```
 
-## License
+## ライセンス
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+このプロジェクトはMITライセンスでライセンスされています - 詳細は[LICENSE](LICENSE)ファイルを参照してください。
 
-## Support
+## サポート
 
-- 📚 [Documentation](https://docs.iac-explain.com)
-- 🐛 [Issue Tracker](https://github.com/your-org/iac-explain/issues)
-- 💬 [Discussions](https://github.com/your-org/iac-explain/discussions)
-- 📧 [Email Support](mailto:support@iac-explain.com)
+- 📚 [ドキュメント](https://docs.iac-explain.com)
+- 🐛 [イシュートラッカー](https://github.com/your-org/iac-explain/issues)
+- 💬 [ディスカッション](https://github.com/your-org/iac-explain/discussions)
+- 📧 [メールサポート](mailto:support@iac-explain.com)
 
 ---
 
-**⚡ Secure your infrastructure before it reaches production!**
+**⚡ 本番環境に到達する前にインフラストラクチャを保護しましょう！**
